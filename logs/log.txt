@@ -1,5 +1,5 @@
 Informações sobre a execução do script 
  
 
-Data:2022-05-31 18:46:10.316069
+Data:2022-06-07 22:29:20.426129
 Usuario que executou o script:rodri
