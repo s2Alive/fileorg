@@ -1,38 +1,67 @@
 #imports
 from logging import root
-from msilib.schema import ComboBox
 from tkinter import *
-from tkinter import ttk
 from tkinter import filedialog
-import tkinter
 import pygame
 import os
-import tkinter as tk
+import getpass
+import os
+from datetime import datetime
+from requests import delete
+import shutil
 
+global pathfile
+pathfile = os.getcwd()
+pathfile = pathfile.replace("\\", "/")
 
-#criando a janela
+global musica 
+musica = pathfile
+
+# CRIANDO A JANELA 
 root = Tk()
-root.title('Organizador de pastas ainda não funcional')
+root.title('Organizador de pastas')
 root.geometry('693x560')
 root.config(bg='black')
 root.resizable(False, False)
 
-#adicionando a img
+# ADICIONANDO A IMAGEM DE BACKGROUND
 img = PhotoImage(file="capa.png")
 label = Label(root,image=img)
 label.place(x=0, y=0)
 
-#funções
-def directory():
-    # get a directory path by user
-    filepath=filedialog.askdirectory(title="Selecione a pasta")
-    print (filepath)
+#FUNÇÃO PARA PEGAR O DIRETORIO
 
-#TESTE DE BOLEANO
+def directory():
+    # ESCOLHE O DIRETORIO 
+
+    filepath=filedialog.askdirectory(title="Selecione a pasta")
+    pathfile = filepath
+    global fimfim
+    fimfim = pathfile
+    print (pathfile)
+    return pathfile
+
+#ATUALIZAÇÃO DE LISTA
+
+
 
 def isChecked():
-    return print("Checkbutton is checked:{}".format(check1.get()))
+    Lista_arquivos = ["PowerPoint-{}".format(check1.get()), "Excel-{}".format(check2.get()), "Texto-{}".format(check3.get()), "Word-{}".format(check4.get()), "PDF-{}".format(check5.get()), "Imagens-{}".format(check6.get())]
+    try:
+        os.chdir(pathfile)
+        gol = open("saida.txt","w") 
+        L = ["{}".format(Lista_arquivos)]  
+        gol.write("") 
+        gol.writelines(L)
+        gol.close()
+    except FileExistsError(delete):
+        pass
+    return print(Lista_arquivos)
 
+# CHAMANDO FUNÇÂO DO SCRIPT PRO BOTÃO FINAL
+
+def org():
+    mover()
 
 #checkbutton
 
@@ -42,6 +71,11 @@ check3 = BooleanVar()
 check4 = BooleanVar()
 check5 = BooleanVar()
 check6 = BooleanVar()
+
+
+#Criando uma lista
+
+Lista_arquivos = ["PowerPoint-True{}".format(check1.get()), "Excel-{}".format(check2.get()), "Texto-{}".format(check3.get()), "Word-{}".format(check4.get()), "PDF-{}".format(check5.get()), "Imagens-{}".format(check6.get())]  
 
 
 #labels e buttons
@@ -61,23 +95,142 @@ checkbutton1 = Checkbutton (root, bg = "white", activebackground = "blue", text=
 checkbutton1.place(x=370, y=350)
 
 
-checkbutton2 = Checkbutton (root, bg = "white",activebackground = "blue", text="Excel", var=check2, onvalue=True, offvalue=False)
+checkbutton2 = Checkbutton (root, bg = "white",activebackground = "blue", text="Excel", var=check2, onvalue=True, offvalue=False, command=isChecked)
 checkbutton2.place(x=310, y=350)
 
-checkbutton3 = Checkbutton (root, bg = "white",activebackground = "blue", text="Texto", var=check3, onvalue=True, offvalue=False)
+checkbutton3 = Checkbutton (root, bg = "white",activebackground = "blue", text="Texto", var=check3, onvalue=True, offvalue=False, command=isChecked)
 checkbutton3.place(x=230, y=350)
 
-checkbutton4 = Checkbutton (root, bg = "white",activebackground = "blue", text="Word", var=check4, onvalue=True, offvalue=False)
+checkbutton4 = Checkbutton (root, bg = "white",activebackground = "blue", text="Word", var=check4, onvalue=True, offvalue=False, command=isChecked)
 checkbutton4.place(x=370, y=400)
 
-checkbutton5 = Checkbutton (root, bg = "white",activebackground = "blue", text="PDF", var=check5, onvalue=True, offvalue=False)
+checkbutton5 = Checkbutton (root, bg = "white",activebackground = "blue", text="PDF", var=check5, onvalue=True, offvalue=False, command=isChecked)
 checkbutton5.place(x=310, y=400)
 
-checkbutton6 = Checkbutton (root, bg = "white",activebackground = "blue", text="Imagens", var=check6, onvalue=True, offvalue=False)
+checkbutton6 = Checkbutton (root, bg = "white",activebackground = "blue", text="Imagens", var=check6, onvalue=True, offvalue=False, command=isChecked)
 checkbutton6.place(x=230, y=400)
 
-button = Button(root, bg = "white",text='Organizar pasta',relief=RAISED,font=('Arial Bold', 12))
+button = Button(root, bg = "white",text='Organizar pasta',relief=RAISED,font=('Arial Bold', 12), command=org)
 button.place(x=290, y=480)
+
+
+
+#SCRIPTZAO DAQUI PRA BAIXO #################
+
+usuario = getpass.getuser()
+data = datetime.now()
+
+
+
+try:
+    os.makedirs('logs')
+except FileExistsError:
+    pass
+
+try:
+    log = open("log.txt","w") 
+    L = ["\nData:{}".format(data), "\nUsuario que executou o script:{}".format(usuario)]  
+    log.write("Informações sobre a execução do script \n \n") 
+    log.writelines(L)
+    log.close()  
+
+except FileExistsError(delete):
+    pass
+
+
+pathpath = pathfile + "/logs/log.txt"
+path2 = pathfile + "/log.txt"
+print (pathpath)
+
+src_path = path2
+dst_path = pathpath
+shutil.move(src_path, dst_path)
+
+
+#criando pasta da data
+def folderdate():
+  os.chdir(fimfim)
+  try:
+    os.makedirs("2022.1")
+  except FileExistsError:
+    pass
+
+
+# MOVENDO OS ARQUIVOS
+def mover():
+  os.chdir(f"{pathfile}")
+  ref_arquivo = open("saida.txt","r")
+  saida = ref_arquivo.readline()
+  if "PowerPoint-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".pptx" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem powerpoint")
+
+  elif "Excel-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".xlsx" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem excel")
+
+  elif "Texto-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".txt" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem texto")
+  
+  if "Word-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".doc" in arquivo or ".docx" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem word")
+  
+  if "PDF-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".pdf" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem PDF")
+  
+  if "Imagens-True" in saida:
+    lista_fim = os.listdir(f"{fimfim}")
+    for arquivo in lista_fim:
+      if ".png" in arquivo or ".jpg" in arquivo or ".jpeg" in arquivo or ".webp" in arquivo:        
+            # jogar pra pasta de janeiro 
+            try:
+              folderdate()                 
+              os.rename(f"{fimfim}/{arquivo}", f"{fimfim}/2022.1/{arquivo}")
+            except FileNotFoundError:
+              print("Não existem imagens")
+  
+  else:
+    print("{}".format(saida))
+  ref_arquivo.close
+
 
 # PLAYER DE MUSICA DAQUI PRA BAIXO ################################################################
 
@@ -85,10 +238,11 @@ button.place(x=290, y=480)
 class MusicPlayer:
 
   # Defining Constructor
+
   def __init__(self,root):
     self.root = root
     # Title of the window
-    self.root.title("Organizador de pastas ainda não funcional")
+    self.root.title("Organizador de pastas")
     # Initiating Pygame
     pygame.init()
     # Initiating Pygame Mixer
@@ -120,7 +274,7 @@ class MusicPlayer:
     # Inserting Playlist listbox
     self.playlist = Listbox(songsframe, relief=GROOVE)
     # Changing Directory for fetching Songs
-    os.chdir("C:/Users/rodri/Documents/Github/FileOrg/fileorg/tema")
+    os.chdir(f"{musica}/tema")
     # Fetching Songs
     songtracks = os.listdir()
     # Inserting Songs into Playlist
@@ -130,7 +284,8 @@ class MusicPlayer:
   # Defining Play Song Function
   def playsong(self):
     # Displaying Selected Song title
-    self.track.set("C:/Users\rodri/Documents/Github/FileOrg/fileorg/tema/tema.mp3")
+    os.chdir(f"{musica}/tema")
+    self.track.set(f"{musica}/tema/tema.mp3")
     # Displaying Status
     self.status.set("-Playing")
     # Loading Selected Song
