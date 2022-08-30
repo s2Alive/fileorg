@@ -1,1 +1,1 @@
-['PowerPoint-True', 'Excel-False', 'Texto-False', 'Word-True', 'PDF-True', 'Imagens-True']
+['PowerPoint-False', 'Excel-False', 'Texto-False', 'Word-False', 'PDF-True', 'Imagens-False']
