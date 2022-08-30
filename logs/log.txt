@@ -1,0 +1,5 @@
+Informações sobre a execução do script 
+ 
+
+Data:2022-06-14 01:20:19.696899
+Usuario que executou o script:rodri

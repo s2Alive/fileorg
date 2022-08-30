@@ -1,0 +1,1 @@
+['PowerPoint-True', 'Excel-False', 'Texto-False', 'Word-True', 'PDF-True', 'Imagens-True']
