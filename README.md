@@ -12,3 +12,4 @@
 <h3 align="center">Aviso: O programa não esta finaliado.</h3>
  
  
+![__yae_miko_genshin_impact_drawn_by_chinchongcha__f927ddf42407382b36591a630b812ce9](https://user-images.githubusercontent.com/93962428/187554223-969b7b58-fea6-4ad6-a3c3-55ae9630b4b8.gif)
